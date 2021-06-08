@@ -11,19 +11,47 @@ class Category extends Database
     {
         try {
             $sql = "INSERT INTO category(name,description) VALUES ('$name', '$desc')";
+            $stmt = $this->conn->prepare($sql);
+            $stmt->execute();
+            return true;
+            }
+            catch(PDOException $e) {
+             echo "Error: " . $e->getMessage();
+        }
+
+    }
+
+    public function update($id, $name, $description)
+    {
+        
+        try {
+            $sql = "UPDATE category SET  name = '$name', description = '$description' WHERE id = $id";
+            $stmt = $this->conn->prepare($sql);
+            $stmt->execute();
+            return true;
+            }
+            catch(PDOException $e) {
+                echo "Error: " . $e->getMessage();
+        } 
+    }
+
+    public function destroy($id)
+    {
+        try {
+            $sql = "DELETE FROM category WHERE id = $id";
             $category = $this->conn->query("$sql")->fetchAll(PDO::FETCH_ASSOC);
             return $category;
             }
             catch(PDOException $e) {
-            //return false;   // echo "Error: " . $e->getMessage();
-        }
+            echo "Error: " . $e->getMessage();
+        } 
 
     }
 
     public function getCategory($id)
     {
         try {
-            $sql = "SELECT id, name FROM category WHERE id = $id";
+            $sql = "SELECT id, name, description FROM category WHERE id = $id";
             $category = $this->conn->query("$sql")->fetchAll(PDO::FETCH_ASSOC);
             return $category;
             }

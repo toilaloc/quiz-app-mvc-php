@@ -16,6 +16,13 @@ class QuizController extends BaseController
         $this->categoryModel = new Category;
         $this->quizModel = new Quiz;
     }
+
+    public function index()
+    {
+       // $data = $this->quizModel->getAll();
+        $this->loadView('admin/quiz/list_quiz');
+    }
+
     public function create()
     {
         $category = $this->categoryModel->getAll();
@@ -44,13 +51,24 @@ class QuizController extends BaseController
 
     public function show()
     {
-        $id = $_GET['id'];
-        $data["id"] = $id;
-        $cate_id = $_GET['cate_id'];
-        $category = $this->categoryModel->getCategory($cate_id);
-        $data["category"] = $category[0]['name'];
-        $data["quiz"] = $this->quizModel->getQuiz($id);
-        $this->loadView('admin/quiz/take_quiz', $data);
+        if (!empty($_GET['id']) && !empty($_GET['cate_id'])) {
+            $id = $_GET['id'];
+            $data["id"] = $id;
+            $cate_id = $_GET['cate_id'];
+            $category = $this->categoryModel->getCategory($cate_id);
+            $quiz = $this->quizModel->getQuiz($id);
+            
+            if (count($category) > 0 && count($quiz) > 0) {
+                $data["category"] = $category[0]['name'];
+                $data["quiz"] = $quiz;
+                $this->loadView('admin/quiz/take_quiz', $data);
+            } else {
+                $this->loadView('error/404');
+            }
+        } else {
+            $this->loadView('error/404');
+        }
+        
     }
 
     public function takeQuiz()

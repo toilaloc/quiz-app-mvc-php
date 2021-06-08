@@ -23,13 +23,13 @@ if (!isset($_SESSION['username'])) {
         <div class="container">
                 <div class="row">
                     <div class="col-md-6 p-3" style="border: 1px solid #28a738;">
-                    <h4>List Category: <button class="btn btn-sm" onclick="window.location.href = 'index.php?c=category&m=show&m=create'">ADD</button> <button class="btn btn-sm" onclick="window.location.href = 'index.php?c=category&m=show'">LIST</button></h4> 
+                    <h4>List Category: <button class="btn btn-sm" onclick="window.location.href = 'index.php?c=category&m=show&m=create'">ADD</button> <button class="btn btn-sm" onclick="window.location.href = 'index.php?c=category&m=index'">LIST</button></h4> 
                     <ul>
                     <?php foreach($data["category"] as $category): ?>
                     <li class="m-2"><?= $category["name"]; ?> <button class="btn btn-sm btn-success" id="<?= $category["id"]; ?>">Take a Quiz</button></li>
                     <?php endforeach; ?>
                     </ul>
-                    <h4>List Quiz: <button class="btn btn-sm" onclick="window.location.href = 'index.php?c=quiz&m=show&m=create'">ADD</button> <button class="btn btn-sm" onclick="window.location.href = 'index.php?c=quiz&m=show'">LIST</button></h4>
+                    <h4>List Quiz: <button class="btn btn-sm" onclick="window.location.href = 'index.php?c=quiz&m=show&m=create'">ADD</button> <button class="btn btn-sm" onclick="window.location.href = 'index.php?c=quiz&m=all'">LIST</button></h4>
                     <?php foreach($data["quiz"] as $quiz): ?>
                     <li class="m-2"><?= $quiz["question"]; ?> <button class="btn btn-sm btn-success" onclick="window.location.href = 'index.php?c=quiz&m=show&m=show&id=<?= $quiz['id']; ?>&cate_id=<?= $quiz['category_id']; ?>' ">Fast Quiz</button></li>
                     <?php endforeach; ?>

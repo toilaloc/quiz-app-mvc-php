@@ -54,7 +54,8 @@
     <?php if (!empty($quiz["wrong_answer_d"])): ?>
         <input type="checkbox" id="quiz" value="<?= $quiz["other_wrong_answer_"]; ?>"> <?= $quiz["other_wrong_answer_"]; ?>
     <?php endif; ?>
-    <button class="btn btn-success btn-quiz btn-sm">Submit</button>
+    <span id="message"></span>
+    <button class="btn btn-success btn-quiz btn-sm">Submit</button> <button class="btn btn-success btn-remake btn-sm">Remake?</button>
     </div>
     <?php endforeach; ?>
     </div>
@@ -64,6 +65,7 @@
     let score;
     let answer;
     let id;
+    $('.btn-remake').hide();
     $('.btn-quiz').on("click", function(){
         answer = $('input[name=quiz]:checked').val();
         if ($.trim(answer) == '') 
@@ -79,11 +81,15 @@
                     data: {id: id, answer: answer},
                     success: function(res){
                         if (res == 0) {
+                            $('.btn-quiz').hide();
+                            $(".btn-remake").show();
                             $("#score").text("0");
                             alert("Wrong answer! Fail!");
                         } else {
+                            $('.btn-quiz').hide();
                             $("#score").text("10");
                             alert("Right answer");
+                            $("#message").html("You are complete the quiz perfect away!!! <a href='index.php'>back to home</a>");
                         }
                     },
                     error: function(error){
@@ -93,6 +99,12 @@
             }
         }
         
+    });
+
+    $('.btn-remake').on('click', function(){
+        $(".quiz").prop("disabled", false);
+        $('.btn-remake').hide();
+        $('.btn-quiz').show();
     });
     </script>
     </body>

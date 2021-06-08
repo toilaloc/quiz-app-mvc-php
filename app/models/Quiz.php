@@ -25,8 +25,9 @@ class Quiz extends Database
     {
         try {
             $sql = "SELECT id, question, category_id FROM quiz";
-            $quizData = $this->conn->query("$sql")->fetchAll(PDO::FETCH_ASSOC);
-            return $quizData;
+            $stmt = $this->conn->prepare($sql);
+            $stmt->execute();
+            return true;
             }
             catch(PDOException $e) {
             echo "Error: " . $e->getMessage();
@@ -37,7 +38,7 @@ class Quiz extends Database
     public function getQuiz($id)
     {
         try {
-            $sql = "SELECT * FROM quiz";
+            $sql = "SELECT * FROM quiz WHERE id = $id";
             $quizData = $this->conn->query("$sql")->fetchAll(PDO::FETCH_ASSOC);
             return $quizData;
             }

@@ -16,7 +16,7 @@ class GeneralController extends BaseController
     }
     public function index() 
     {
-        $getCategory = $this->categoryModel->getAll();
+        $getCategory = $this->categoryModel->getCategoryGeneral();
         $getQuiz = $this->quizModel->getQuizGeneral();
         $data["quiz"] = $getQuiz;
         $data["category"] = $getCategory;

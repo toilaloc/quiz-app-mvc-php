@@ -72,4 +72,16 @@ class Category extends Database
             echo "Error: " . $e->getMessage();
         } 
     }
+
+    public function getCategoryGeneral()
+    {
+        try {
+            $sql = "SELECT * FROM category LIMIT 5";
+            $category = $this->conn->query("$sql")->fetchAll(PDO::FETCH_ASSOC);
+            return $category;
+            }
+            catch(PDOException $e) {
+            echo "Error: " . $e->getMessage();
+        }  
+    }
 }

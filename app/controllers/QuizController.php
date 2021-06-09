@@ -19,8 +19,8 @@ class QuizController extends BaseController
 
     public function index()
     {
-       // $data = $this->quizModel->getAll();
-        $this->loadView('admin/quiz/list_quiz');
+        $data = $this->quizModel->getAll();
+        $this->loadView('admin/quiz/list_quiz', $data);
     }
 
     public function create()
@@ -49,6 +49,38 @@ class QuizController extends BaseController
         }
     }
 
+    public function edit()
+    {
+        $id = $_GET['id'];
+        $category = $this->categoryModel->getAll();
+        $data["categoryData"] = $category;
+        $data["quiz"] = $this->quizModel->getQuiz($id);
+        $this->loadView('admin/quiz/edit_quiz', $data);
+
+    }
+
+
+    public function update()
+    {
+        $id = $_GET["id"];
+        $question = strip_tags($_POST['question']);
+        $anser_a = strip_tags($_POST['wrong_answer_a']);
+        $anser_b = strip_tags($_POST['wrong_answer_b']);
+        $anser_c = strip_tags($_POST['wrong_answer_c']);
+        $anser_other = strip_tags($_POST['other_wrong_answer']);
+        $right_anser = strip_tags($_POST['right_answer']);
+        $user_id = $_SESSION["id"];
+        $category_id = strip_tags($_POST['category_id']);
+
+        $updateQuiz = $this->quizModel->update($id, $question, $anser_a, $anser_b, $anser_c, $anser_other, $right_anser, $user_id, $category_id);    
+
+        if ($updateQuiz) {
+           //$this->message("update success");
+           header("Location: index.php?c=quiz&m=edit&id=$id&state=200");
+        } 
+    }
+
+
     public function show()
     {
         if (!empty($_GET['id']) && !empty($_GET['cate_id'])) {
@@ -73,8 +105,21 @@ class QuizController extends BaseController
 
     public function takeQuiz()
     {
-
+        $categoryId = $_GET['category_id'];
+        $getQuiz = $this->quizModel->getQuizForCategory($categoryId);
+        if (count($getQuiz) != 0) {
+            $this->loadView('admin/quiz/quiz_category', $getQuiz);
+        } else {
+            echo "No quiz";
+        }
     }
+
+    public function destroy()
+    {
+        $id = $_REQUEST['id'];
+        $this->quizModel->destroy($id);
+    }
+
 
     public function message($textMessage)
     {
